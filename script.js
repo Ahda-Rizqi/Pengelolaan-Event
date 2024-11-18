@@ -13,7 +13,7 @@ function tambahEvent(namaEvent) {
     // 1.1 Cek apakah namaEvent sudah ada di eventList
     if (namaEvent == platformEvent.eventList[i]) {
       // 1.2 Jika sudah ada, tampilkan pesan "Event sudah ada"
-      console.log("Event " + namaEvent + " sudah ada di dalam evenlist!");
+      console.log("Event " + namaEvent + " sudah ada di dalam eventlist!");
       return platformEvent.eventList;
     }
   }
@@ -27,13 +27,42 @@ function tambahEvent(namaEvent) {
 
 // 2. Fungsi untuk mendaftar peserta ke event tertentu
 function daftarPeserta(namaEvent, namaPeserta) {
-  // Pseudocode:
-  // 2.1 Cek apakah namaEvent ada di eventList
-  // 2.2 Jika event tidak ditemukan, tampilkan pesan "Event tidak ditemukan"
-  // 2.3 Cek apakah namaPeserta sudah terdaftar di eventParticipants[namaEvent]
-  // 2.4 Jika sudah terdaftar, tampilkan pesan "Peserta sudah terdaftar"
-  // 2.5 Jika belum terdaftar, tambahkan namaPeserta ke eventParticipants[namaEvent]
-  // 2.6 Tampilkan pesan bahwa peserta berhasil ditambahkan
+  if (!namaEvent || !namaPeserta) {
+    console.log("Nama buku dan nama peminjam harus diisi!!");
+    return perpus;
+  }
+
+  let eventFound = false;
+
+  // Cek apakah event ada
+  for (let i = 0; i < platformEvent.eventList.length; i++) {
+    if (namaEvent === platformEvent.eventList[i]) {
+      eventFound = true;
+      console.log("Event " + namaEvent + " sudah ada");
+
+      // Cek apakah peserta sudah ada
+      if (platformEvent.eventParticipants[namaEvent].includes(namaPeserta)) {
+        console.log("Peserta " + namaPeserta + " sudah terdaftar di event " + namaEvent);
+        return platformEvent.eventParticipants[namaEvent]; // Kembalikan daftar peserta event
+      }
+
+      // Tambahkan peserta jika belum ada
+      platformEvent.eventParticipants[namaEvent].push(namaPeserta);
+      console.log("Peserta " + namaPeserta + " berhasil ditambahkan ke event " + namaEvent);
+      return platformEvent.eventParticipants[namaEvent]; // Kembalikan daftar peserta yang sudah terdaftar
+    }
+  }
+
+  // Jika event tidak ditemukan, buat event baru dan tambahkan peserta
+  if (!eventFound) {
+    console.log("Event " + namaEvent + " tidak ditemukan, membuat event baru!");
+    platformEvent.eventList.push(namaEvent);
+    platformEvent.eventParticipants[namaEvent] = [namaPeserta];
+    console.log("Event " + namaEvent + " dan peserta " + namaPeserta + " berhasil ditambahkan");
+
+    // Kembalikan daftar event setelah penambahan
+    return platformEvent.eventList;
+  }
 }
 
 // 3. Fungsi untuk membatalkan peserta dari event tertentu
