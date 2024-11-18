@@ -57,7 +57,8 @@ function daftarPeserta(namaEvent, namaPeserta) {
   if (!eventFound) {
     console.log("Event " + namaEvent + " tidak ditemukan, membuat event baru!");
     platformEvent.eventList.push(namaEvent);
-    platformEvent.eventParticipants[namaEvent] = [namaPeserta];
+    platformEvent.eventParticipants[namaEvent] = [];
+    platformEvent.eventParticipants[namaEvent].push(namaPeserta);
     console.log("Event " + namaEvent + " dan peserta " + namaPeserta + " berhasil ditambahkan");
 
     // Kembalikan daftar event setelah penambahan
@@ -67,13 +68,30 @@ function daftarPeserta(namaEvent, namaPeserta) {
 
 // 3. Fungsi untuk membatalkan peserta dari event tertentu
 function batalkanPeserta(namaEvent, namaPeserta) {
-  // Pseudocode:
-  // 3.1 Cek apakah namaEvent ada di eventList
-  // 3.2 Jika event tidak ditemukan, tampilkan pesan "Event tidak ditemukan"
-  // 3.3 Cari namaPeserta dalam eventParticipants[namaEvent]
-  // 3.4 Jika peserta ditemukan, hapus peserta dari eventParticipants[namaEvent]
-  // 3.5 Tampilkan pesan bahwa peserta berhasil dibatalkan
-  // 3.6 Jika peserta tidak ditemukan, tampilkan pesan "Peserta tidak ditemukan"
+  // 1. Cek apakah namaEvent ada di eventList
+  if (!platformEvent.eventList.includes(namaEvent)) {
+    // 2. Jika namaEvent tidak ditemukan, tampilkan "Event tidak ditemukan"
+    console.log("Event tidak ditemukan!");
+    return;
+  }
+
+  if (!platformEvent.eventParticipants[namaEvent]) {
+    console.log("Peserta untuk event ini tidaak ada.");
+    return;
+  }
+  if (platformEvent.eventList.includes(namaEvent)) {
+    // 3. Jika namaEvent ditemukan, cek apakah namaPeserta ada di daftar peserta untuk namaEvent
+    let index = platformEvent.eventParticipants[namaEvent].indexOf(namaPeserta);
+    // 4. Jika namaPeserta ditemukan, hapus peserta dari daftar peserta dan tampilkan "Peserta berhasil dibatalkan"
+    if (index !== -1) {
+      platformEvent.eventParticipants[namaEvent].splice(index, 1);
+      console.log("Peserta berhasil dibatalkan");
+      return platformEvent;
+    } else {
+      // 5. Jika namaPeserta tidak ditemukan, tampilkan "Peserta tidak ditemukan"
+      console.log("Peserta tidak ditemukan!");
+    }
+  }
 }
 
 // 4. Fungsi untuk mengecek daftar peserta di event tertentu
