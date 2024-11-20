@@ -49,29 +49,27 @@ function daftarPeserta(namaEvent, namaPeserta) {
     if (platformEvent.eventParticipants[namaEvent].includes(namaPeserta)) {
       console.log("Nama peserta sudah terdaftar!");
       return platformEvent.eventParticipants[namaEvent];
-    } else if (!platformEvent.eventParticipants[namaEvent].includes(namaPeserta)) {
-      let konfirmasi = confirm("Apakah anda ingin memasukkan nama peserta ke event ?");
-
-      if (konfirmasi) {
-        platformEvent.eventParticipants[namaEvent].push(namaPeserta);
-        console.log("Nama peserta berhasil ditambahkan");
-        return platformEvent.eventParticipants[namaEvent];
-      } else {
-        console.log("Nama peserta gagal ditambahkan");
-      }
     }
-  }
 
-  let konfirmasi = confirm("Apa anda ingin membuat event baru ?");
-
-  if (konfirmasi) {
-    console.log("Nama event akan di tambahkan");
-    platformEvent.eventList.push(namaEvent);
-    platformEvent.eventParticipants[namaEvent] = [];
-    platformEvent.eventParticipants[namaEvent].push(namaPeserta);
-    return platformEvent.eventList;
+    let konfirmasi = confirm("Apakah anda ingin memasukkan nama peserta ke event ?");
+    if (konfirmasi) {
+      platformEvent.eventParticipants[namaEvent].push(namaPeserta);
+      console.log("Nama peserta berhasil ditambahkan");
+      return platformEvent.eventParticipants[namaEvent];
+    } else {
+      console.log("Nama peserta gagal ditambahkan");
+    }
   } else {
-    console.log("Event " + namaEvent + " gagal ditambahkan");
+    let konfirmasi = confirm("Apa anda ingin membuat event baru ?");
+    if (konfirmasi) {
+      console.log("Nama event akan di tambahkan");
+      platformEvent.eventList.push(namaEvent);
+      platformEvent.eventParticipants[namaEvent] = [];
+      platformEvent.eventParticipants[namaEvent].push(namaPeserta);
+      return platformEvent.eventList;
+    } else {
+      console.log("Event " + namaEvent + " gagal ditambahkan");
+    }
   }
 }
 
@@ -89,24 +87,60 @@ function batalkanEvent(namaEvent) {
   }
 
   if (platformEvent.eventList.includes(namaEvent)) {
+    let konfirmasi = confirm("Apakah anda yakin ingin menghapus event?");
     let indexeventlists = platformEvent.eventList.indexOf(namaEvent);
-    if (indexeventlists !== -1) {
-      platformEvent.eventList.splice(indexeventlists, 1);
-    }
-    if ((indexeventparticipants = platformEvent.eventParticipants.hasOwnProperty(namaEvent))) {
-      delete platformEvent.eventParticipants[namaEvent];
-    }
+    if (konfirmasi) {
+      if (indexeventlists !== -1) {
+        platformEvent.eventList.splice(indexeventlists, 1);
+      }
+      if (platformEvent.eventParticipants.hasOwnProperty(namaEvent)) {
+        delete platformEvent.eventParticipants[namaEvent];
+      }
 
-    console.log("Event " + namaEvent + " berhasil dibatalkan");
-    return "Event yang ada " + platformEvent.eventList;
+      console.log("Event " + namaEvent + " berhasil dibatalkan");
+      return "Event yang ada " + platformEvent.eventList;
+    } else {
+      console.log("Membantalkan pengahapusan event");
+    }
   }
 }
 
 // 4. Fungsi untuk membatalkan peserta dari event tertentu
-function batalkanPeserta(namaEvent, namaPeserta) {}
+function batalkanPeserta(namaEvent, namaPeserta) {
+  if (!namaEvent || !namaPeserta) {
+    console.log("Nama event dan nama peserta wajin diisi!");
+    return;
+  }
+
+  if (!platformEvent.eventParticipants[namaEvent] || !platformEvent.eventParticipants[namaEvent].includes(namaPeserta)) {
+    console.log("Nama peseta " + namaPeserta + " tidak ditemukan di event " + namaEvent + " !");
+    return;
+  }
+
+  let konfirmasi = confirm("Apakah anda yakin ingin menghapus peserta ?");
+  if (konfirmasi) {
+    let indexeventparticipants = platformEvent.eventParticipants[namaEvent].indexOf(namaPeserta);
+    platformEvent.eventParticipants[namaEvent].splice(indexeventparticipants, 1);
+    console.log("Nama peserta berhasil di batalkan");
+    return platformEvent.eventList;
+  } else {
+    console.log("Anda membatalkan penghapusan peserta");
+  }
+}
 
 // 5. Fungsi untuk mengecek daftar peserta di event tertentu
-function cekPeserta(namaEvent) {}
+function cekPeserta(namaEvent) {
+  if (!namaEvent) {
+    console.log("Event wajin diisi!");
+    return;
+  }
+
+  console.log("Daftar peserta di event " + namaEvent + " adalah =");
+  let daftarPeserta = platformEvent.eventParticipants[namaEvent].join(",");
+  console.log(daftarPeserta);
+}
 
 // 6. Fungsi untuk mengecek semua event dan jumlah peserta di setiap event
-function cekEvent() {}
+function cekEvent() {
+  console.log("Event yang ada = " + platformEvent.eventList.join(", "));
+}
